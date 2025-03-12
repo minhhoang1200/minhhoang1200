@@ -1,0 +1,7 @@
+Bắt đầu
+    Nhập số nguyên n
+    Nếu n chia hết cho 2 thì
+        In ra "n là số chẵn"
+    Ngược lại
+        In ra "n là số lẻ"
+Kết thúc
