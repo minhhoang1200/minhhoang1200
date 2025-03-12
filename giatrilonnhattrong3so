@@ -1,0 +1,12 @@
+Bắt đầu
+    Nhập vào ba số a, b, c
+    
+    Nếu a > b và a > c thì
+        max = a
+    Ngược lại, nếu b > a và b > c thì
+        max = b
+    Ngược lại
+        max = c
+    
+    In ra giá trị lớn nhất là max
+Kết thúc
