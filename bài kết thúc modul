@@ -1,0 +1,242 @@
+#bài 1:Cho một mảng số nguyên có số phần tử không vượt quá 50 phần tử, viết chương trình
+hiển thị trung bình cộng các số có trong mảng chia hết cho 3:
+
+function tbcChiaHetCho3(arr) {
+    let sum = 0;
+    let count = 0;
+    
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] % 3 === 0) {
+            sum += arr[i];
+            count++;
+        }
+    }
+    
+    if (count === 0) {
+        return "Không có số nào chia hết cho 3 trong mảng";
+    }
+    
+    return sum / count;
+}
+#bài 2:Viết hàm cho phép nhập vào một số nguyên dương, kiểm tra xem số vừa nhập đó có phải
+là số hoàn hảo hay không. Chương trình sẽ trả về true nếu số đó là số hoàn hảo và false nếu
+không phải là số hoàn hảo:
+
+function isPerfectNumber(n) {
+    if (n <= 1) return false;  // Số hoàn hảo phải lớn hơn 1
+    
+    let sum = 1;  // 1 luôn là ước
+    for (let i = 2; i <= Math.sqrt(n); i++) {
+        if (n % i === 0) {
+            sum += i;
+            if (i !== n / i) {
+                sum += n / i;
+            }
+        }
+    }
+    
+    return sum === n;
+}
+#bài 3: Viết chương trình cho phép nhập tháng, năm. Tính xem tháng/ năm đó có bao nhiêu
+ngày. Yêu cầu kiểm tra định dạng của tháng năm nhập vào MM/yyyy:
+
+function getDaysInMonth(monthYear) {
+    // Kiểm tra định dạng MM/yyyy
+    if (!/^\d{2}\/\d{4}$/.test(monthYear)) {
+        return "Định dạng không hợp lệ. Vui lòng nhập theo dạng MM/yyyy";
+    }
+
+    const [monthStr, yearStr] = monthYear.split('/');
+    const month = parseInt(monthStr);
+    const year = parseInt(yearStr);
+
+    // Kiểm tra tháng hợp lệ (1-12)
+    if (month < 1 || month > 12) {
+        return "Tháng không hợp lệ. Tháng phải từ 1 đến 12";
+    }
+
+    // Kiểm tra năm nhuận cho tháng 2
+    if (month === 2) {
+        const isLeapYear = (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+        return isLeapYear ? 29 : 28;
+    }
+
+    // Các tháng có 30 hoặc 31 ngày
+    const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    return daysInMonth[month - 1];
+}
+#Bài 4:Viết chương trình quản lý công nhân trong phân xưởng. Tạo đối tượng Công nhân bao
+gồm các thông tin như sau: STT, Họ và tên, ngày sinh, Địa chỉ, Lương và Chức vụ:
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý công nhân</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h1>QUẢN LÝ CÔNG NHÂN PHÂN XƯỞNG</h1>
+    
+    <div id="form-container">
+        <h2>Thêm công nhân mới</h2>
+        <div class="form-group">
+            <label for="name">Họ và tên:</label>
+            <input type="text" id="name" required>
+        </div>
+        <div class="form-group">
+            <label for="dob">Ngày sinh:</label>
+            <input type="date" id="dob" required>
+        </div>
+        <div class="form-group">
+            <label for="address">Địa chỉ:</label>
+            <input type="text" id="address" required>
+        </div>
+        <div class="form-group">
+            <label for="salary">Lương:</label>
+            <input type="number" id="salary" required>
+        </div>
+        <div class="form-group">
+            <label for="position">Chức vụ:</label>
+            <input type="text" id="position" required>
+        </div>
+        <button onclick="addWorker()">Thêm công nhân</button>
+    </div>
+    
+    <div id="list-container">
+        <h2>Danh sách công nhân</h2>
+        <table id="workerTable">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Họ và tên</th>
+                    <th>Ngày sinh</th>
+                    <th>Địa chỉ</th>
+                    <th>Lương</th>
+                    <th>Chức vụ</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody id="workerList">
+                <!-- Danh sách công nhân sẽ được hiển thị ở đây -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        let workers = [];
+        let currentId = 1;
+
+        // Hàm thêm công nhân mới
+        function addWorker() {
+            const name = document.getElementById('name').value;
+            const dob = document.getElementById('dob').value;
+            const address = document.getElementById('address').value;
+            const salary = document.getElementById('salary').value;
+            const position = document.getElementById('position').value;
+
+            if (!name || !dob || !address || !salary || !position) {
+                alert('Vui lòng nhập đầy đủ thông tin!');
+                return;
+            }
+
+            const newWorker = {
+                id: currentId++,
+                name: name,
+                dob: dob,
+                address: address,
+                salary: salary,
+                position: position
+            };
+
+            workers.push(newWorker);
+            displayWorkers();
+            
+            // Reset form
+            document.getElementById('name').value = '';
+            document.getElementById('dob').value = '';
+            document.getElementById('address').value = '';
+            document.getElementById('salary').value = '';
+            document.getElementById('position').value = '';
+        }
+
+        // Hàm hiển thị danh sách công nhân (đã sắp xếp theo tên)
+        function displayWorkers() {
+            // Sắp xếp công nhân theo tên
+            workers.sort((a, b) => a.name.localeCompare(b.name));
+            
+            const workerList = document.getElementById('workerList');
+            workerList.innerHTML = '';
+            
+            workers.forEach((worker, index) => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${worker.name}</td>
+                    <td>${worker.dob}</td>
+                    <td>${worker.address}</td>
+                    <td>${worker.salary}</td>
+                    <td>${worker.position}</td>
+                    <td>
+                        <button onclick="editWorker(${worker.id})">Sửa</button>
+                        <button onclick="deleteWorker(${worker.id})">Xóa</button>
+                    </td>
+                `;
+                
+                workerList.appendChild(row);
+            });
+        }
+
+        // Hàm xóa công nhân
+        function deleteWorker(id) {
+            if (confirm('Bạn có chắc chắn muốn xóa công nhân này?')) {
+                workers = workers.filter(worker => worker.id !== id);
+                displayWorkers();
+            }
+        }
+
+        // Hàm sửa thông tin công nhân
+        function editWorker(id) {
+            const worker = workers.find(w => w.id === id);
+            if (!worker) return;
+            
+            document.getElementById('name').value = worker.name;
+            document.getElementById('dob').value = worker.dob;
+            document.getElementById('address').value = worker.address;
+            document.getElementById('salary').value = worker.salary;
+            document.getElementById('position').value = worker.position;
+            
+            // Xóa công nhân cũ sau khi lấy thông tin để chỉnh sửa
+            workers = workers.filter(w => w.id !== id);
+        }
+    </script>
+</body>
+</html>
+
